@@ -6,28 +6,51 @@ on:
       - update-chipsets
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
+  auto-update:
+    name: Automated benchmarks update
+    runs-on: ubuntu-20.04
+
     steps:
       - name: Check out code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          ref: ${{ github.head_ref }}
 
-      - name: Use Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '18.x'
 
-      - name: Install & build
-        run: |
-          npm install --legacy-peer-deps
-          npm run update-benchmarks
-          npm run build
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        id: yarn-cache
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+          key: ${{ runner.os }}-install-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Deploy benchmarks
-        uses: peaceiris/actions-gh-pages@v4
+      - name: Install dependencies (cold)
+        if: ${{ steps.yarn-cache.outputs.cache-hit != 'true' }}
+        run: yarn install
+
+      - name: Install dependencies (cache hit)
+        if: ${{ steps.yarn-cache.outputs.cache-hit == 'true' }}
+        run: yarn install --prefers-offline
+
+      - name: Bump patch version
+        run: npm version patch --no-git-tag-version
+
+      - name: Update benchmarks
+        run: yarn run update-benchmarks
+
+      - name: Build final result
+        run: yarn build
+
+      - name: Deploy benchmarks to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v6
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist/benchmarks
-
+          # publish_branch: gh-pages    # (optional, default)
+          # keep_files: false            # (optional, default)
