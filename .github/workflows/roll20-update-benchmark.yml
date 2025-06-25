@@ -1,0 +1,32 @@
+name: Publish benchmarks to GitHub Pages
+
+on:
+  push:
+    branches:
+      - update-chipsets
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install & build
+        run: |
+          npm ci
+          npm run build
+
+      - name: Deploy benchmarks
+        uses: peaceiris/actions-gh-pages@v6
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist/benchmarks
+
