@@ -57,7 +57,7 @@ jobs:
         with:
           path: benchmarks
 
-    - name: Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
