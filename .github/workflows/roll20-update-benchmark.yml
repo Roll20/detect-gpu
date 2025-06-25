@@ -22,6 +22,7 @@ jobs:
       - name: Install & build
         run: |
           npm install --legacy-peer-deps
+          npm run update-benchmarks
           npm run build
 
       - name: Deploy benchmarks
