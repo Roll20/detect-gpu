@@ -15,7 +15,7 @@
       [
         2160,
         1620,
-        38,
+        36,
         "apple ipad (10.2-inch) (7th generation)"
       ]
     ]
@@ -35,13 +35,13 @@
       [
         2224,
         1668,
-        51,
+        46,
         "apple ipad pro (10.5-inch)"
       ],
       [
         2732,
         2048,
-        36,
+        44,
         "apple ipad pro (12.9-inch, 2nd gen)"
       ]
     ]
@@ -61,13 +61,13 @@
       [
         2160,
         1620,
-        59,
+        58,
         "apple ipad 8th gen (wifi+cellular)"
       ],
       [
         2224,
         1668,
-        58,
+        59,
         "apple ipad air (2019)"
       ]
     ]
@@ -101,8 +101,8 @@
       [
         2388,
         1668,
-        113,
-        "apple ipad pro (11-inch) (2rd generation)"
+        115,
+        "apple ipad pro (11-inch) (2nd generation)"
       ],
       [
         2732,
@@ -121,7 +121,7 @@
       [
         2160,
         1620,
-        60,
+        59,
         "apple ipad 9th gen"
       ]
     ]
@@ -136,7 +136,7 @@
         2360,
         1640,
         60,
-        "apple ipad (10th generation)"
+        "apple ipad air (4th generation)"
       ],
       [
         2388,
@@ -167,16 +167,16 @@
     ]
   ],
   [
-    "apple a17 pro gpu",
-    "17",
-    "a17 apple gpu pro",
+    "apple a16 gpu",
+    "16",
+    "a16 apple gpu",
     0,
     [
       [
-        2266,
-        1488,
+        2360,
+        1640,
         60,
-        "apple ipad mini 7th gen cellular (a17)"
+        "apple ipad 11th gen (wifi)"
       ]
     ]
   ],
@@ -279,12 +279,6 @@
         2048,
         60,
         "apple ipad pro (12.9-inch) (5th generation)"
-      ],
-      [
-        2752,
-        2064,
-        103,
-        "apple ipad pro (12.9-inch) (5th generation)"
       ]
     ]
   ],
@@ -307,10 +301,30 @@
         "apple ipad pro 11 inch (4th gen)"
       ],
       [
+        2730,
+        2048,
+        120,
+        "apple ipad pro 12.9-inch (6th generation)"
+      ],
+      [
         2732,
         2048,
         60,
         "apple ipad air 13-inch (m2)"
+      ]
+    ]
+  ],
+  [
+    "apple m3 gpu",
+    "3",
+    "apple gpu m3",
+    0,
+    [
+      [
+        2360,
+        1640,
+        60,
+        "apple ipad air 11-inch 7th gen (wifi)"
       ]
     ]
   ],
