@@ -53,7 +53,7 @@ jobs:
         run: yarn build
 
       - name: Upload benchmarks as Pages artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-artifact@v4
         with:
           path: benchmarks
 
