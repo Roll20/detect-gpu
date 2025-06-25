@@ -52,7 +52,12 @@ jobs:
       - name: Build final result
         run: yarn build
 
-      - name: Deploy benchmarks to GitHub Pages
+      - name: Upload benchmarks as Pages artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: benchmarks
+
+    - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
