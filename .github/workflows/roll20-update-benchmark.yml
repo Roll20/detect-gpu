@@ -48,7 +48,8 @@ jobs:
         run: yarn build
 
       - name: Deploy benchmarks to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+        uses: actions/deploy-pages@v1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./benchmarks
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages
+          folder: benchmark
