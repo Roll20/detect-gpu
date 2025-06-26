@@ -12,9 +12,7 @@ permissions:
 
 jobs:
   build:
-    name: Automated benchmarks update
     runs-on: ubuntu-latest
-
     steps:
       - name: Check out code
         uses: actions/checkout@v4
