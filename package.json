@@ -1,5 +1,5 @@
 {
-  "name": "detect-gpu",
+  "name": "@roll20/detect-gpu",
   "version": "5.0.70",
   "description": "Classify GPU's based on their benchmark score in order to provide an adaptive experience.",
   "author": "Tim van Scherpenzeel",
@@ -7,30 +7,22 @@
   "main": "dist/detect-gpu.umd.js",
   "module": "dist/detect-gpu.esm.js",
   "types": "dist/src/index.d.ts",
-  "homepage": "https://github.com/pmndrs/detect-gpu#readme",
+  "homepage": "https://github.com/Roll20/detect-gpu#readme",
   "bugs": {
-    "url": "https://github.com/pmndrs/detect-gpu/issues"
+    "url": "https://github.com/Roll20/detect-gpu/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/pmndrs/detect-gpu.git"
+    "url": "https://github.com/Roll20/detect-gpu.git"
   },
   "files": [
     "dist"
   ],
-  "keywords": [
-    "gpu",
-    "detect",
-    "webgl",
-    "webgl2",
-    "three.js",
-    "babylonjs",
-    "three",
-    "babylon",
-    "3d",
-    "typescript",
-    "javascript"
-  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/",
+    "access": "public"
+  },
+  "keywords": [],
   "scripts": {
     "start": "rollup -c rollup/config.lib.ts -w --configPlugin rollup-plugin-typescript2",
     "lint": "eslint \"src/**/*.ts\" \"test/**/*.ts\" \"test/**/*.test.ts\" \"rollup/**/*.ts\" \"scripts/**/*.ts\" \"scripts/**/*.js\" --fix --cache --cache-location ~/.eslintcache/eslintcache",
@@ -43,7 +35,8 @@
     "example": "rollup -w -c rollup/config.dev.ts --configPlugin rollup-plugin-typescript2",
     "parse-analytics": "node ./scripts/analytics_parser.js",
     "update-benchmarks": "rimraf benchmarks && mkdir -p benchmarks && mkdir -p benchmarks-min && ts-node -O '{\"module\":\"commonjs\"}' ./scripts/update_benchmarks.ts && tar -czvf benchmarks.tar.gz benchmarks-min/*.json && rm -rf benchmarks-min",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "release": "npm publish"
   },
   "dependencies": {
     "webgl-constants": "^1.1.1"
