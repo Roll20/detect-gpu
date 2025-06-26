@@ -11,7 +11,6 @@ permissions:
   id-token: write
 
 env:
-  # default for the live run; test step will override to local
   BENCHMARKS_URL: https://roll20.github.io/detect-gpu
 
 jobs:
@@ -49,7 +48,6 @@ jobs:
           path: benchmarks
 
   deploy:
-    name: Deploy to GitHub Pages
     needs: build
     runs-on: ubuntu-latest
     environment:
