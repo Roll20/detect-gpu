@@ -16,7 +16,6 @@ env:
 
 jobs:
   build:
-    name: 🔨 Build & Validate Benchmarks
     runs-on: ubuntu-latest
 
     steps:
@@ -28,28 +27,13 @@ jobs:
         with:
           node-version: '18.x'
 
-      - name: Cache dependencies
-        uses: actions/cache@v4
-        id: yarn-cache
-        with:
-          path: |
-            node_modules
-            */*/node_modules
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-
-      - name: Install dependencies (cold)
-        if: ${{ steps.yarn-cache.outputs.cache-hit != 'true' }}
-        run: yarn install --frozen-lockfile
-
-      - name: Install dependencies (cache hit)
-        if: ${{ steps.yarn-cache.outputs.cache-hit == 'true' }}
-        run: yarn install --frozen-lockfile --prefer-offline
-
-      - name: Bump patch version
-        run: npm version patch --no-git-tag-version
+      - name: Install & build
+        run: |
+          npm install --legacy-peer-deps
+          npm run build
 
       - name: Update benchmarks
-        run: yarn run update-benchmarks
+        run: npm run update-benchmarks
 
       - name: Validate *local* benchmark JSON shape
         run: |
@@ -58,9 +42,6 @@ jobs:
             --runTestsByPath
         env:
           BENCHMARKS_URL: file://${{ github.workspace }}/benchmarks
-
-      - name: Build final result
-        run: yarn build
 
       - name: Upload benchmarks as Pages artifact
         uses: actions/upload-pages-artifact@v3
