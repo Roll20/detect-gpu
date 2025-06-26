@@ -10,16 +10,20 @@ permissions:
   pages: write
   id-token: write
 
+env:
+  # default for the live run; test step will override to local
+  BENCHMARKS_URL: https://roll20.github.io/detect-gpu
+
 jobs:
   build:
+    name: 🔨 Build & Validate Benchmarks
     runs-on: ubuntu-latest
+
     steps:
       - name: Check out code
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref }}
 
-      - name: Set up Node.js
+      - name: Use Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18.x'
@@ -31,21 +35,29 @@ jobs:
           path: |
             node_modules
             */*/node_modules
-          key: ${{ runner.os }}-install-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install dependencies (cold)
         if: ${{ steps.yarn-cache.outputs.cache-hit != 'true' }}
-        run: yarn install
+        run: yarn install --frozen-lockfile
 
       - name: Install dependencies (cache hit)
         if: ${{ steps.yarn-cache.outputs.cache-hit == 'true' }}
-        run: yarn install --prefers-offline
+        run: yarn install --frozen-lockfile --prefer-offline
 
       - name: Bump patch version
         run: npm version patch --no-git-tag-version
 
       - name: Update benchmarks
         run: yarn run update-benchmarks
+
+      - name: Validate *local* benchmark JSON shape
+        run: |
+          npx jest test/validate-benchmarks-shape.test.ts \
+            --env=jsdom \
+            --runTestsByPath
+        env:
+          BENCHMARKS_URL: file://${{ github.workspace }}/benchmarks
 
       - name: Build final result
         run: yarn build
@@ -56,11 +68,13 @@ jobs:
           path: benchmarks
 
   deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
+
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
