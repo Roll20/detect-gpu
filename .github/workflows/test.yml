@@ -1,4 +1,4 @@
-name: Run actions on Pull Request or Push
+name: Run tests and linting on pull requests
 on:
   push:
     branches:
@@ -14,13 +14,18 @@ on:
 
 jobs:
   test:
-    name: Run test & lint
-    runs-on: Ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      # make sure we don't pick up our repo's .npmrc
+      - name: Un-configure GitHub Packages
+        run: rm -f .npmrc
+
       - uses: actions/setup-node@v4
         with:
           node-version: '18.x'
+
       - uses: actions/cache@v4
         id: yarn-cache
         with:
@@ -28,6 +33,7 @@ jobs:
             node_modules
             */*/node_modules
           key: ${{ runner.os }}-install-${{ hashFiles('**/yarn.lock') }}
+
       - run: yarn install
         if: ${{ steps.yarn-cache.outputs.cache-hit != 'true' }}
 

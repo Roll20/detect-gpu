@@ -1,0 +1,63 @@
+name: Publish benchmarks to GitHub Pages
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 */14 * *'  # every 14 days at midnight UTC
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+env:
+  BENCHMARKS_URL: https://roll20.github.io/detect-gpu
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+
+      - name: Install & build
+        run: |
+          npm install --legacy-peer-deps
+          npm run build
+
+      - name: Update benchmarks
+        run: npm run update-benchmarks
+
+      - name: Validate *local* benchmark JSON shape
+        run: |
+          npx jest test/validate-benchmarks-shape.test.ts \
+            --env=jsdom \
+            --runTestsByPath
+        env:
+          BENCHMARKS_URL: file://${{ github.workspace }}/benchmarks
+
+      - name: Upload benchmarks as Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: benchmarks
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

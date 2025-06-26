@@ -1,36 +1,27 @@
 {
-  "name": "detect-gpu",
-  "version": "5.0.70",
+  "name": "@roll20/detect-gpu",
+  "version": "5.0.74",
   "description": "Classify GPU's based on their benchmark score in order to provide an adaptive experience.",
   "author": "Tim van Scherpenzeel",
   "license": "MIT",
   "main": "dist/detect-gpu.umd.js",
   "module": "dist/detect-gpu.esm.js",
   "types": "dist/src/index.d.ts",
-  "homepage": "https://github.com/pmndrs/detect-gpu#readme",
+  "homepage": "https://github.com/Roll20/detect-gpu#readme",
   "bugs": {
-    "url": "https://github.com/pmndrs/detect-gpu/issues"
+    "url": "https://github.com/Roll20/detect-gpu/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/pmndrs/detect-gpu.git"
+    "url": "https://github.com/Roll20/detect-gpu.git"
   },
   "files": [
     "dist"
   ],
-  "keywords": [
-    "gpu",
-    "detect",
-    "webgl",
-    "webgl2",
-    "three.js",
-    "babylonjs",
-    "three",
-    "babylon",
-    "3d",
-    "typescript",
-    "javascript"
-  ],
+  "publishConfig": {
+    "@roll20:registry": "https://npm.pkg.github.com"
+  },
+  "keywords": [],
   "scripts": {
     "start": "rollup -c rollup/config.lib.ts -w --configPlugin rollup-plugin-typescript2",
     "lint": "eslint \"src/**/*.ts\" \"test/**/*.ts\" \"test/**/*.test.ts\" \"rollup/**/*.ts\" \"scripts/**/*.ts\" \"scripts/**/*.js\" --fix --cache --cache-location ~/.eslintcache/eslintcache",
@@ -42,7 +33,8 @@
     "build": "rollup -c rollup/config.lib.ts --configPlugin rollup-plugin-typescript2",
     "example": "rollup -w -c rollup/config.dev.ts --configPlugin rollup-plugin-typescript2",
     "parse-analytics": "node ./scripts/analytics_parser.js",
-    "update-benchmarks": "rimraf benchmarks && mkdir -p benchmarks && mkdir -p benchmarks-min && ts-node -O '{\"module\":\"commonjs\"}' ./scripts/update_benchmarks.ts && tar -czvf benchmarks.tar.gz benchmarks-min/*.json && rm -rf benchmarks-min"
+    "update-benchmarks": "rimraf benchmarks && mkdir -p benchmarks && mkdir -p benchmarks-min && ts-node -O '{\"module\":\"commonjs\"}' ./scripts/update_benchmarks.ts && tar -czvf benchmarks.tar.gz benchmarks-min/*.json && rm -rf benchmarks-min",
+    "prepare": "npm run build"
   },
   "dependencies": {
     "webgl-constants": "^1.1.1"
@@ -53,6 +45,7 @@
     "@types/jest": "^29.5.3",
     "@typescript-eslint/eslint-plugin": "^6.4.0",
     "@typescript-eslint/parser": "^6.4.0",
+    "cross-fetch": "^4.1.0",
     "csvtojson": "^2.0.10",
     "eslint": "^8.4.1",
     "eslint-config-prettier": "^9.0.0",
