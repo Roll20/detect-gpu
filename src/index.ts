@@ -216,19 +216,22 @@ export const getGPUTier = async ({
     }
 
     const tokenizedRenderer = tokenizeForLevenshteinDistance(renderer);
-    // eslint-disable-next-line prefer-const
-    let [gpu, , , , fpsesByPixelCount] =
+
+    // pick the best matching row
+    const bestMatch =
       matchCount > 1
         ? matched
-            .map(
-              (match) =>
-                [
-                  match,
-                  getLevenshteinDistance(tokenizedRenderer, match[2]),
-                ] as const
+            .map((match) =>
+              [match, getLevenshteinDistance(tokenizedRenderer, match[2])] as const
             )
             .sort(([, a], [, b]) => a - b)[0][0]
         : matched[0];
+
+    // gpu name is always at index 0
+    const gpu = bestMatch[0];
+
+    // fpses array is always the last element
+    const fpsesByPixelCount = bestMatch[bestMatch.length - 1] as ModelEntryScreen[];
 
     debug?.(
       `${renderer} matched closest to ${gpu} with the following screen sizes`,
